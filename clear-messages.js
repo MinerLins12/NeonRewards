@@ -1,58 +1,47 @@
-/*
-  A bot to clear/delete messages of a channel
-
-  Usage: !clearMessages  ==> clears all messages of
-  that channel on which the command was run
-
-*/
-
-const CLEAR_MESSAGES = '!clearMessages';
-
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const client = new Discord.Client();
 
-// Token of my bot
-const token = 'MjMxMjk3Mzg3OTU4NzYzNTIw.CtaOnA.eiqE_DIaS2hHW_c-k4jWLHR1Eu8';
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
 
-bot.on('ready', () => {
-  console.log('ClearMessagesBot is Ready!');
-  bot.on('message', message => {
-    if (message.content == CLEAR_MESSAGES) {
+const exampleEmbed = new Discord.RichEmbed()
+	.setColor('#ff3030')
+	.setTitle('Need Help? Contact Us!')
+	.setDescription('Message our **ModMail** bot for further assistance, and we will get back to you as soon as we can. Have a pleasant stay here at **Neon Rewards** | **Club**!')
+	.setImage('https://cdn.discordapp.com/attachments/671916220609724436/672302302161534996/unknown.png')
+	.setFooter('Server Roles')
+	.setTimestamp()
 
-      // Check the following permissions before deleting messages:
-      //    1. Check if the user has enough permissions
-      //    2. Check if I have the permission to execute the command
 
-      if (!message.channel.permissionsFor(message.author).hasPermission("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      } else if (!message.channel.permissionsFor(bot.user).hasPermission("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      }
-
-      // Only delete messages if the channel type is TextChannel
-      // DO NOT delete messages in DM Channel or Group DM Channel
-      if (message.channel.type == 'text') {
-        message.channel.fetchMessages()
-          .then(messages => {
-            message.channel.bulkDelete(messages);
-            messagesDeleted = messages.array().length; // number of messages deleted
-
-            // Logging the number of messages deleted on both the channel and console.
-            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
-            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
-          })
-          .catch(err => {
-            console.log('Error while doing Bulk Delete');
-            console.log(err);
-          });
-      }
-    }
-  });
+client.on("message", (message) => {
+  if (message.content.startsWith("!embed")) {
+    message.delete()
+    message.channel.send(exampleEmbed);
+    
+  }
 });
 
 
-bot.login(token);
+client.login('NjcxODc5MzEzODUwNzYxMjE2.XjInqw.jSCzR3Mt0PurWzc4Qg0H3kHyPeU')
+
+/*const exampleEmbed = new Discord.RichEmbed()
+	.setColor('#0099ff')
+	.setTitle('Some title')
+	.setURL('https://discord.js.org/')
+	.setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+	.setDescription('Some description here')
+	.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+	.addField('Regular field title', 'Some value here')
+	.addBlankField()
+	.addField('Inline field title', 'Some value here', true)
+	.addField('Inline field title', 'Some value here', true)
+	.addField('Inline field title', 'Some value here', true)
+	.setImage('https://i.imgur.com/wSTFkRM.png')
+	.setTimestamp()
+	.setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+
+channel.send(exampleEmbed);*/
+
+//Main Embed Color - #00aeff
+//Middle Embed Color - #e5ff00
